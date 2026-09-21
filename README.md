@@ -83,3 +83,9 @@ macOS 电量面板及 WidgetKit 小组件。显示设备图标、名称和电量
 ## 许可证
 
 [MIT](LICENSE) · Copyright © 2026 Zhilu
+
+## 自动发布
+
+GitHub Actions 会在推送 `v*` 标签后自动测试、构建通用安装包、验证版本号与架构、生成 SHA-256 校验文件，再发布中文 Release。主应用和 Widget 的 `CFBundleShortVersionString` 必须与标签去掉 `v` 后一致。
+
+也可在 Actions →「构建与发布」→ Run workflow 中输入已有标签，补发旧版本。流水线使用 GitHub 自动提供的令牌，无需配置个人访问令牌。附件上传成功后才公开 Release，已经发布的版本不会被覆盖。安装包仍为 ad-hoc 签名，流水线不包含公证。
