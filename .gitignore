@@ -1,0 +1,19 @@
+# Local builds and compiler caches
+/build/
+/DerivedData/
+*.app/
+*.appex/
+*.dSYM/
+*.zip
+*.xcarchive/
+
+# Xcode user settings
+xcuserdata/
+*.xcuserstate
+.DS_Store
+
+# Local configuration and runtime data
+.env
+.env.*
+*.log
+batteries.json
