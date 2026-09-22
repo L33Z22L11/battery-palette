@@ -44,23 +44,31 @@ struct BatteryWidgetView: View {
                 Image(systemName: "battery.0percent").font(.largeTitle)
                     .accessibilityLabel("电量暂不可用，请打开 BatteryPalette")
             } else if family == .systemLarge {
-                VStack(spacing: 8) {
-                    ForEach(Array(entry.snapshot.devices.prefix(6))) { d in
-                        HStack(spacing: 12) {
-                            BatteryRing(device: d, symbol: icon(d), size: 44)
-                            if entry.snapshot.displayOptions.showDeviceNames { Text(d.name).font(.system(size: 13)).lineLimit(1) }
-                            Spacer(minLength: 2)
-                            percentage(d, fontSize: 17)
-                        }.accessibilityElement(children: .combine)
+                GeometryReader { geometry in
+                    let devices = Array(entry.snapshot.devices.prefix(6))
+                    let rowHeight = min(80, geometry.size.height / CGFloat(max(1, devices.count)))
+                    let ringSize = max(24, min(60, rowHeight - 12))
+                    VStack(spacing: 0) {
+                        ForEach(devices) { d in
+                            HStack(spacing: max(12, ringSize * 0.22)) {
+                                BatteryRing(device: d, symbol: icon(d), size: ringSize)
+                                if entry.snapshot.displayOptions.showDeviceNames { Text(d.name).font(.system(size: 13)).lineLimit(1) }
+                                Spacer(minLength: 2)
+                                percentage(d, fontSize: 17)
+                            }
+                            .frame(height: rowHeight)
+                            .accessibilityElement(children: .combine)
+                        }
                     }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                 }
             } else if family == .systemSmall {
                 LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 6) {
-                    ForEach(Array(entry.snapshot.devices.prefix(4))) { d in tile(d, small: true) }
+                    ForEach(Array(devicesByLowestBattery(entry.snapshot.devices).prefix(4))) { d in tile(d, small: true) }
                 }
             } else {
                 HStack(alignment: .center, spacing: 8) {
-                    ForEach(Array(entry.snapshot.devices.prefix(4))) { d in
+                    ForEach(Array(devicesByLowestBattery(entry.snapshot.devices).prefix(4))) { d in
                         tile(d, small: false).frame(maxWidth: .infinity)
                     }
                 }

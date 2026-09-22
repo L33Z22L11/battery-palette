@@ -51,3 +51,12 @@ func readDevices() -> [Device]? {
         return a.name.localizedStandardCompare(b.name) == .orderedAscending
     }
 }
+
+// Keep equal readings in their existing order; unknown readings come last.
+func devicesByLowestBattery(_ devices: [Device]) -> [Device] {
+    devices.enumerated().sorted { a, b in
+        let lhs = a.element.percent ?? Int.max
+        let rhs = b.element.percent ?? Int.max
+        return lhs == rhs ? a.offset < b.offset : lhs < rhs
+    }.map(\.element)
+}

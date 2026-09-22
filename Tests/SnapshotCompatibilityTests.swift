@@ -10,6 +10,11 @@ import Foundation
         let changed = BatterySnapshot(date: Date(), devices: [], icons: [:], display: BatteryDisplayOptions(showPercentage: false, showDeviceNames: false))
         let roundTrip = try JSONDecoder().decode(BatterySnapshot.self, from: JSONEncoder().encode(changed))
         precondition(roundTrip.displayOptions == changed.displayOptions)
+        func device(_ id: String, _ value: Int?) -> Device {
+            Device(id: id, name: id, percent: value, charging: false, category: "", defaultIcon: "keyboard")
+        }
+        let ordered = devicesByLowestBattery([device("unknown", nil), device("full", 100), device("low-a", 10), device("zero", 0), device("low-b", 10)])
+        precondition(ordered.map(\.id) == ["zero", "low-a", "low-b", "full", "unknown"])
         print("Snapshot compatibility and display settings round-trip passed")
     }
 }
