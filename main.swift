@@ -13,13 +13,14 @@ final class BatteryModel: ObservableObject {
     var display = BatteryDisplayOptions()
     var timer: Timer?
     var onRefresh: (() -> Void)?
+    var onWake: (() -> Void)?
     init() {
         refresh()
         timer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { [weak self] _ in self?.refresh() }
         timer?.tolerance = 5
         NSWorkspace.shared.notificationCenter.addObserver(self, selector: #selector(woke), name: NSWorkspace.didWakeNotification, object: nil)
     }
-    @objc func woke() { refresh() }
+    @objc func woke() { refresh(); onWake?() }
     func refresh() {
         if let result = readDevices() { devices = result; updated = Date(); failed = false }
         else { failed = true; devices = [] }
@@ -200,6 +201,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSMe
     let model = BatteryModel()
     let preferences = PresentationPreferences()
     let gameMode = GameModeReader()
+    let widgetHealth = WidgetRegistrationHealth()
     var panel: DesktopPanel!
     var glassSurface: NSView?
     var status: NSStatusItem?
@@ -276,6 +278,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSMe
         }
         model.display = preferences.display
         model.publishSnapshot(forceReload: true)
+        widgetHealth.onRepair = { [weak self] in self?.model.publishSnapshot(forceReload: true) }
+        model.onWake = { [weak self] in self?.widgetHealth.check(afterWake: true) }
+        widgetHealth.check()
         gameMode.onChange = { [weak self] in self?.updateStatusImage() }
         NotificationCenter.default.addObserver(self, selector: #selector(powerModeChanged), name: .NSProcessInfoPowerStateDidChange, object: nil)
         updateStatusItem()

@@ -9,3 +9,6 @@ xcrun swiftc Sources/StatusAppearance.swift Tests/StatusAppearanceTests.swift -f
 "$TEST_STAGE/status-tests"
 xcrun swiftc Sources/BatteryData.swift Sources/SnapshotStore.swift Tests/SnapshotCompatibilityTests.swift -framework IOKit -o "$TEST_STAGE/snapshot-tests"
 "$TEST_STAGE/snapshot-tests"
+
+xcrun swiftc Sources/WidgetRegistrationHealth.swift Tests/WidgetRegistrationTests.swift -o "$TEST_STAGE/registration-tests"
+"$TEST_STAGE/registration-tests"

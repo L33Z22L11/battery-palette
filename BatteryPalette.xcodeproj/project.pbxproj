@@ -39,6 +39,7 @@
 				<string>1133D06C5C0BDCB75B691087</string>
 				<string>F1E80AB3AFBC3E23257E41B0</string>
 				<string>FB0442A9FA31CA0599F9484C</string>
+				<string>F74D3276BA28FFEEF4AE268E</string>
 			</array>
 			<key>isa</key>
 			<string>PBXSourcesBuildPhase</string>
@@ -128,6 +129,7 @@
 				<string>B097B24E2ACC3C85009ECD17</string>
 				<string>FBDC4F23F93125BBEEAE800C</string>
 				<string>70BE0CCA7166411E1FB04708</string>
+				<string>43385845E8FE32174F0271C4</string>
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>
@@ -659,6 +661,24 @@
 			<string>6183FC8A6F08C3142CA12345</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
+		</dict>
+		<key>43385845E8FE32174F0271C4</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>path</key>
+			<string>Sources/WidgetRegistrationHealth.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>F74D3276BA28FFEEF4AE268E</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>fileRef</key>
+			<string>43385845E8FE32174F0271C4</string>
 		</dict>
 	</dict>
 	<key>rootObject</key>
